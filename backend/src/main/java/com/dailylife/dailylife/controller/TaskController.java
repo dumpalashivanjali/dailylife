@@ -5,6 +5,7 @@ import com.dailylife.dailylife.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -29,14 +30,14 @@ public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
 }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
+    public Task createTask(@Valid @RequestBody Task task){
         return taskService.createTask(task);
     }
 
     @PutMapping("/{id}")
 public ResponseEntity<Task> updateTask(
         @PathVariable Long id,
-        @RequestBody Task task) {
+        @Valid @RequestBody Task task) {
 
     return taskService.updateTask(id, task)
             .map(ResponseEntity::ok)
