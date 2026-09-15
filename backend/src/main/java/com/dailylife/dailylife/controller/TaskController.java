@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
 import jakarta.validation.Valid;
+import com.dailylife.dailylife.dto.TaskRequest;
+import com.dailylife.dailylife.dto.TaskResponse;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -18,28 +20,26 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTasks() {
-        return taskService.getAllTasks();
-    }
-
-    @GetMapping("/{id}")
-public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+public List<TaskResponse> getAllTasks() {
+    return taskService.getAllTasks();
+}
+   @GetMapping("/{id}")
+public ResponseEntity<TaskResponse> getTaskById(@PathVariable Long id) {
     return taskService.getTaskById(id)
             .map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.notFound().build());
 }
-
     @PostMapping
-    public Task createTask(@Valid @RequestBody Task task){
-        return taskService.createTask(task);
-    }
+public TaskResponse createTask(@Valid @RequestBody TaskRequest request) {
+    return taskService.createTask(request);
+}
 
-    @PutMapping("/{id}")
-public ResponseEntity<Task> updateTask(
+   @PutMapping("/{id}")
+public ResponseEntity<TaskResponse> updateTask(
         @PathVariable Long id,
-        @Valid @RequestBody Task task) {
+        @Valid @RequestBody TaskRequest request) {
 
-    return taskService.updateTask(id, task)
+    return taskService.updateTask(id, request)
             .map(ResponseEntity::ok)
             .orElseGet(() -> ResponseEntity.notFound().build());
 }
